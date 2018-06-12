@@ -1,5 +1,5 @@
 var request = require('request');
-var secret = require('./secrets')
+var secrets = require('./secrets')
 
 console.log('Welcome to the GitHub Avatar Downloader!');
 
@@ -9,19 +9,21 @@ function getRepoContributors(repoOwner, repoName, callback) {
 
         headers : { 
             'User-Agent' : 'request',
-            'Authorization' : secrets.GITHUB_TOKEN
+            'Authorization' : 'token ' + secrets.GITHUB_TOKEN
         }
         
     }
 
-    request(url, function(err, res, body){
-        callback(err, body);
+    request(options, function(err, res, body){
+        callback(err, JSON.parse(body));
     });
 
 };
 
 getRepoContributors("jquery", "jquery", function(err, result) {
     console.log("Errors:", err);
-    console.log("Result:", result);
+    // console.log("Result:", result);
+    result.forEach(function(user){
+        console.log(user.avatar_url)
+    });
   });
-  
